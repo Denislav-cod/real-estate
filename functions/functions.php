@@ -55,3 +55,38 @@ function logOut()
         }
     }
 }
+
+function registration($name, $email, $password)
+{
+    $conn = connect();
+    try {
+        $cookieName = "logAndReg";
+        regValidation($email);
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO users ( `name`, `email`, `password`) VALUES ('$name', '$email', '$hash')";
+        $conn->query($sql);
+        setcookie($cookieName, $email, time() + 3600, "/");
+        header("Location: http://localhost/php/Php-project/Project/view/searchProp.php");
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
+
+    $conn->close();
+}
+
+function regValidation($email)
+{
+    $emails = [];
+    $conn = connect();
+    $sql = "SELECT email from users";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            array_push($emails, $row['email']);
+        }
+    }
+    if (in_array($email, $emails)) {
+        throw new Exception("Потребител с този имейл вече съществува");
+    }
+    $conn->close();
+}
