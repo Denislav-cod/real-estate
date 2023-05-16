@@ -25,7 +25,7 @@ include_once('../functions/functions.php');
           </li>';
             }
             echo '<li class="nav-item">
-            <a class="nav-link" href="home.php">Продажба</a>
+            <a class="nav-link" href="home.php">Публикувай имот</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="searchProp.php">Търсене</a>
